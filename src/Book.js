@@ -22,6 +22,7 @@ export function Book(title, year, publicationBy, authors) {
   authors.forEach((author) => {
     author.books.push(this);
   });
+  this.likedUsers = [];
 
   Object.defineProperty(this, 'suggestedBooks', {
     get() {

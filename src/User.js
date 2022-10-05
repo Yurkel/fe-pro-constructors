@@ -10,14 +10,14 @@ import { Book } from './Book.js';
 //   friend.friends.push(this);
 // };
 
-// const likeTo = function (book) {
-//   if (this.likes.includes(book)) {
-//     this.likes = this.likes.filter((user) => user !== book);
-//     book.likes = book.likes.filter((user) => user !== this);
+// const addTo = function (item) {
+//   if (this[arrName].includes(item)) {
+//     this[arrName] = this[arrName].filter((elem) => elem !== item);
+//     item[itemArrName] = item[itemArrName].filter((elem) => elem !== this);
 //     return;
 //   }
-//   this.likes.push(book);
-//   book.likes.push(this);
+//   this[arrName].push(item);
+//   item[itemArrName].push(this);
 // };
 
 /**
@@ -36,41 +36,41 @@ export function User(name, date) {
   this.myBooks = [];
   this.friends = [];
   this.likes = [];
-  this.addToFriends = addMethods(this.friends);
 
   const addMethods = [
     {
       functionName: 'addToFriends',
-      includesMass: 'friends',
-      findValue: 'friend',
+      arrName: 'friends',
+      itemArrName: 'friends',
     },
     {
       functionName: 'likeBook',
-      includesMass: 'likes',
-      findValue: 'book',
+      arrName: 'likes',
+      itemArrName: 'likedUsers',
+    },
+    {
+      functionName: 'removeFriend',
+      arrName: 'friends',
+      itemArrName: 'friends',
+    },
+    {
+      functionName: 'unlikeBook',
+      arrName: 'likes',
+      itemArrName: 'likedUsers',
     },
   ];
 
-  addMethods.forEach(({ functionName, includesMass, findValue }) => {
-    this.functionName = function (findValued) {
-      if (this[includesMass].includes(findValue)) {
-        this[includesMass] = this[includesMass].filter(
-          (user) => user !== findValue
-        );
-        findValue[includesMass] = findValue[includesMass].filter(
-          (user) => user !== this
-        );
+  addMethods.forEach(({ functionName, arrName, itemArrName }) => {
+    this[functionName] = function (item) {
+      if (this[arrName].includes(item)) {
+        this[arrName] = this[arrName].filter((elem) => elem !== item);
+        item[itemArrName] = item[itemArrName].filter((elem) => elem !== this);
+        return;
       }
-      this[includesMass].push(findValue);
-      findValue[includesMass].push(this);
+      this[arrName].push(item);
+      item[itemArrName].push(this);
     };
   });
-
-  this.likeBook = addMethods(this.likes);
-
-  this.removeFriend = addMethods(this.friends);
-
-  this.unlikeBook = addMethods(this.likes);
 
   Object.defineProperty(this, 'friendsNames', {
     get() {
